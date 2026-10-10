@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IGNIS NOVA - DMA P3.1 V2.1 con Interpretaciones</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- html2pdf.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-wrap justify-between items-center">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-indigo-400">IGNIS NOVA</span>
+                <h1 class="text-xl font-bold">Medición de Madurez Digital (DMA P3.1)</h1>
+            </div>
+            <div class="text-xs text-slate-400 mt-2 sm:mt-0 text-right">
+                <span>Versión 2.1 Actualizada · Septiembre 2026</span><br>
+                <span class="text-indigo-300 font-mono">EDIH / JRC DMA v2.1</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 md:p-6">
+
+        <!-- Banner Explicativo -->
+        <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 mb-6 rounded-r shadow-sm">
+            <h2 class="text-sm font-bold text-indigo-900 uppercase tracking-wide">Módulo Maestro de Diagnóstico P3.1</h2>
+            <p class="text-sm text-indigo-800 mt-1">
+                Adaptación del Digital Maturity Assessment (DMA) para PYMES en El Salvador. Complete todas las secciones utilizando las guías funcionales y catálogos de interpretación metodológica incorporados.
+            </p>
+        </div>
+
+        <!-- Formulario -->
+        <form id="dmaForm" onsubmit="calcularDMA(event)" class="space-y-8">
+
+            <!-- DIMENSIÓN 1 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D1. Estrategia Empresarial Digital</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D1</span>
+                </div>
+                <div class="p-6 space-y-6">
+
+                    <!-- D1-Q1 -->
+                    <div class="border-b border-slate-100 pb-6">
+                        <h3 class="font-semibold text-slate-900 mb-1">D1-Q1. Áreas de inversión en digitalización</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿En cuáles de las siguientes áreas la empresa ya ha realizado inversiones en digitalización y en cuáles tiene previsto invertir? Marque todas las opciones que correspondan.</p>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead>
+                                    <tr class="border-b border-slate-200 text-xs font-semibold text-slate-600 uppercase bg-slate-50">
+                                        <th class="py-3 px-4">Área de Negocio y Definición Funcional</th>
+                                        <th class="py-3 px-4 text-center w-32">Ya realizó inversiones</th>
+                                        <th class="py-3 px-4 text-center w-32">Tiene previsto invertir</th>
+                                        <th class="py-3 px-4 text-center w-32 bg-slate-100 text-slate-500">SIN INVERSIÓN ACTUAL NI PREVISTA</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100" id="table-D1Q1">
+                                    <!-- Rows populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- D1-Q2 -->
+                    <div>
+                        <h3 class="font-semibold text-slate-900 mb-1">D1-Q2. Preparación para avanzar en digitalización</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Cuáles de estas condiciones existen actualmente en la empresa para que pueda avanzar en su digitalización?</p>
+                        <div class="space-y-3" id="group-D1Q2"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- DIMENSIÓN 2 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D2. Preparación Digital</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D2</span>
+                </div>
+                <div class="p-6 space-y-6">
+
+                    <!-- D2-Q3 -->
+                    <div class="border-b border-slate-100 pb-6">
+                        <h3 class="font-semibold text-slate-900 mb-1">D2-Q3. Tecnologías y soluciones digitales actualmente utilizadas</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Cuáles de las siguientes tecnologías y soluciones digitales utiliza actualmente la empresa?</p>
+                        <div class="space-y-3" id="group-D2Q3"></div>
+                    </div>
+
+                    <!-- D2-Q4 -->
+                    <div>
+                        <h3 class="font-semibold text-slate-900 mb-1">D2-Q4. Tecnologías digitales avanzadas y estado de adopción</h3>
+                        <p class="text-sm text-slate-500 mb-4">Indique el estado de adopción (Escala 0–5) para cada una de las tecnologías avanzadas.</p>
+                        <div class="space-y-4" id="group-D2Q4"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- DIMENSIÓN 3 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D3. Personas y Capacidad Digital</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D3</span>
+                </div>
+                <div class="p-6 space-y-6">
+
+                    <!-- D3-Q5 -->
+                    <div class="border-b border-slate-100 pb-6">
+                        <h3 class="font-semibold text-slate-900 mb-1">D3-Q5. Desarrollo de capacidades digitales</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Qué acciones realiza la empresa para desarrollar y fortalecer las competencias digitales de su equipo?</p>
+                        <div class="space-y-3" id="group-D3Q5"></div>
+                    </div>
+
+                    <!-- D3-Q6 -->
+                    <div>
+                        <h3 class="font-semibold text-slate-900 mb-1">D3-Q6. Participación y apoyo del personal</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Cómo gestiona la empresa el cambio y el involucramiento del personal en la adopción de soluciones digitales?</p>
+                        <div class="space-y-3" id="group-D3Q6"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- DIMENSIÓN 4 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D4. Gestión de Datos y Ciberseguridad</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D4</span>
+                </div>
+                <div class="p-6 space-y-6">
+
+                    <!-- D4-Q7 -->
+                    <div class="border-b border-slate-100 pb-6">
+                        <h3 class="font-semibold text-slate-900 mb-1">D4-Q7. Gestión, almacenamiento e integración de datos</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Cómo gestiona la empresa los datos que utiliza para sus actividades y decisiones?</p>
+                        <div class="space-y-3" id="group-D4Q7"></div>
+                    </div>
+
+                    <!-- D4-Q8 -->
+                    <div>
+                        <h3 class="font-semibold text-slate-900 mb-1">D4-Q8. Seguridad de la información y continuidad</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Qué medidas aplica la empresa para proteger sus datos y mantener la continuidad de sus operaciones?</p>
+                        <div class="space-y-3" id="group-D4Q8"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- DIMENSIÓN 5 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D5. Automatización e Inteligencia Artificial</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D5</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="font-semibold text-slate-900 mb-1">D5-Q9. Estado de adopción de tecnologías avanzadas e IA</h3>
+                    <p class="text-sm text-slate-500 mb-4">¿Qué nivel de utilización tiene actualmente la empresa de tecnologías de automatización e inteligencia en sus procesos empresariales (Escala 0–5)?</p>
+                    <div class="space-y-4" id="group-D5Q9"></div>
+                </div>
+            </section>
+
+            <!-- DIMENSIÓN 6 -->
+            <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="bg-slate-800 text-white px-6 py-4 flex items-center justify-between">
+                    <h2 class="font-bold text-lg">D6. Digitalización Verde y Sostenibilidad</h2>
+                    <span class="bg-indigo-600 text-xs px-2.5 py-1 rounded-full font-semibold">Peso D6</span>
+                </div>
+                <div class="p-6 space-y-6">
+
+                    <!-- D6-Q10 -->
+                    <div class="border-b border-slate-100 pb-6">
+                        <h3 class="font-semibold text-slate-900 mb-1">D6-Q10. Uso de tecnología para sostenibilidad</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿Cómo utiliza su empresa las tecnologías digitales para contribuir a la sostenibilidad ambiental?</p>
+                        <div class="space-y-3" id="group-D6Q10"></div>
+                    </div>
+
+                    <!-- D6-Q11 -->
+                    <div>
+                        <h3 class="font-semibold text-slate-900 mb-1">D6-Q11. Impactos ambientales en decisiones digitales</h3>
+                        <p class="text-sm text-slate-500 mb-4">¿La empresa tiene en cuenta los impactos ambientales en sus decisiones y prácticas digitales? (No / Parcialmente / Sí)</p>
+                        <div class="space-y-3" id="group-D6Q11"></div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- BOTÓN CÁLCULO -->
+            <div class="pt-4 flex justify-end">
+                <button type="submit" class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-8 py-3.5 rounded-lg shadow-md transition-colors flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7hr6m-6 4h6m-6 4h6M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    <span>Calcular Madurez Digital e Interpretar</span>
+                </button>
+            </div>
+
+        </form>
+
+        <!-- SECCIÓN RESULTADOS E INTERPRETACIONES -->
+        <div id="resultsSection" class="hidden mt-10 space-y-8">
+            <div id="pdfContainer" class="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-slate-200 space-y-8">
+                <div class="border-b border-slate-200 pb-4 flex flex-wrap justify-between items-center">
+                    <div>
+                        <span class="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-1">IGNIS NOVA · DMA P3.1 V2.1</span>
+                        <h2 class="text-2xl font-bold text-slate-900">Informe de Madurez Digital e Interpretación</h2>
+                        <p class="text-sm text-slate-500">Evaluación oficial marco EDIH / JRC v2.1 · Catálogo de Interpretaciones JRC</p>
+                    </div>
+                    <div class="flex flex-col items-end gap-2 mt-2 sm:mt-0">
+                        <span id="badgeNivel" class="px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wide uppercase"></span>
+                        <button id="pdfBtn" onclick="descargarPDF()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition-colors flex items-center space-x-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <span>Descargar Informe PDF</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <!-- Score Global -->
+                    <div class="bg-slate-50 rounded-xl p-6 text-center border border-slate-200 flex flex-col justify-center items-center h-full">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Puntaje Global DMA</span>
+                        <div id="scoreGlobal" class="text-6xl font-black text-indigo-600 my-2">0.0</div>
+                        <span class="text-xs text-slate-400">Escala de 0 a 100</span>
+                        <div class="w-full bg-slate-200 rounded-full h-2.5 mt-4">
+                            <div id="progressBar" class="bg-indigo-600 h-2.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Radar Chart -->
+                    <div class="md:col-span-2 flex justify-center items-center relative h-72 md:h-80" id="chartWrapper">
+                        <canvas id="radarChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Interpretación Global -->
+                <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-6">
+                    <h3 class="text-sm font-bold text-indigo-900 uppercase tracking-wide mb-2">Interpretación Metodológica Global</h3>
+                    <p id="globalInterpretationText" class="text-sm text-indigo-950 leading-relaxed"></p>
+                </div>
+
+                <!-- Desglose e Interpretaciones Dimensionales -->
+                <div class="border-t border-slate-100 pt-6">
+                    <h3 class="text-base font-bold text-slate-800 mb-4">Desglose e Interpretación por Dimensión</h3>
+                    <div class="grid grid-cols-1 gap-6" id="dimensionCards"></div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p>© 2026 IGNIS NOVA · Módulo Maestro DMA para P3.1 El Salvador.</p>
+            <p class="mt-1">Basado en la metodología oficial European Digital Innovation Hubs Network (EDIH) / JRC v2.1.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DATA MASTER Y DEFINICIONES FUNCIONALES
+        const d1q1Items = [
+            { id: 'D1Q1-01', text: 'Diseño de productos/servicios', desc: 'Investigación, desarrollo e innovación de productos o servicios.' },
+            { id: 'D1Q1-02', text: 'Planificación y gestión de proyectos', desc: 'Planificar actividades, responsables, tiempos, recursos y dar seguimiento.' },
+            { id: 'D1Q1-03', text: 'Operaciones', desc: 'Producción, empaque, mantenimiento o prestación de servicios.' },
+            { id: 'D1Q1-04', text: 'Colaboración en la cadena de valor', desc: 'Intercambio digital de información o trabajo con otras sedes, proveedores o empresas vinculadas a la actividad.' },
+            { id: 'D1Q1-05', text: 'Logística de entrada y almacenamiento', desc: 'Recepción de materiales/productos, almacenamiento y gestión de existencias.' },
+            { id: 'D1Q1-06', text: 'Marketing, ventas y servicio al cliente', desc: 'Promoción, gestión de clientes, pedidos, atención y soporte.' },
+            { id: 'D1Q1-07', text: 'Entrega al cliente', desc: 'Salida de productos, despacho, entrega y documentación/comprobantes electrónicos.' },
+            { id: 'D1Q1-08', text: 'Administración y recursos humanos', desc: 'Contabilidad, administración, nómina y gestión del personal.' },
+            { id: 'D1Q1-09', text: 'Compras y abastecimiento', desc: 'Solicitudes, proveedores, órdenes de compra y seguimiento.' },
+            { id: 'D1Q1-10', text: 'Seguridad informática y cumplimiento de obligaciones sobre datos personales', desc: 'Protección de sistemas e información y cumplimiento de obligaciones aplicables al tratamiento de datos personales.' }
+        ];
+
+        const d1q2Items = [
+            { id: 'D1Q2-01', text: 'Las necesidades de digitalización están identificadas y alineadas con objetivos del negocio.', desc: 'Se han identificado los aspectos de la empresa que requieren digitalización y se ha relacionado esa necesidad con los objetivos del negocio.' },
+            { id: 'D1Q2-02', text: 'Se han identificado recursos financieros suficientes para sostener la digitalización durante al menos un año.', desc: 'Se han identificado recursos financieros destinados a financiar la digitalización durante al menos un año.' },
+            { id: 'D1Q2-03', text: 'La infraestructura de tecnologías de información está preparada para apoyar los planes de digitalización.', desc: 'Comprende los recursos de tecnologías de información necesarios para apoyar los planes de digitalización, como conectividad a Internet, computación en la nube y acceso remoto a sistemas de la empresa.' },
+            { id: 'D1Q2-04', text: 'La empresa cuenta con especialistas en tecnologías de información y comunicación, empleados o subcontratados, o ha identificado la necesidad de contratarlos.', desc: 'Se refiere a disponer de especialistas TIC, mediante personal propio o subcontratado, o haber identificado la necesidad de incorporarlos.' },
+            { id: 'D1Q2-05', text: 'La dirección está preparada para liderar los cambios organizativos necesarios.', desc: 'Se refiere a la disposición de la dirección para conducir los cambios organizativos que sean necesarios para avanzar en la digitalización.' },
+            { id: 'D1Q2-06', text: 'Las áreas y trabajadores afectados están preparados para apoyar los planes de digitalización.', desc: 'Comprende las áreas y personas cuyo trabajo estará involucrado en los planes de digitalización y su disposición para apoyarlos.' },
+            { id: 'D1Q2-07', text: 'La estructura de la empresa y los procesos operativos pueden adaptarse cuando la digitalización lo requiere.', desc: 'Se refiere a la capacidad de adaptar la organización y los procesos operativos cuando los planes de digitalización lo requieren.' },
+            { id: 'D1Q2-08', text: 'Cuando corresponde al negocio, los productos se comercializan como servicio o se complementan con servicios habilitados por tecnologías digitales.', desc: 'El elemento se cumple cuando el producto no constituye por sí solo toda la propuesta de valor al cliente: se ofrece mediante una modalidad basada en el servicio o en su uso, o se complementa con un servicio digital. No se refiere a vender servicios digitales independientes ni al simple uso de tecnología dentro de la empresa.' },
+            { id: 'D1Q2-09', text: 'La satisfacción de clientes y socios en servicios o interacciones en línea se monitorea regularmente.', desc: 'Se refiere al seguimiento periódico de la satisfacción de clientes y socios respecto de servicios o interacciones realizadas en línea.' },
+            { id: 'D1Q2-10', text: 'Se consideran los riesgos de la digitalización, incluidos efectos no previstos sobre otras áreas.', desc: 'Se consideran los posibles efectos no previstos de los cambios digitales sobre otras áreas de la empresa y los riesgos asociados.' },
+            { id: 'D1Q2-11', text: 'Ninguna de las anteriores', desc: 'No aplica ninguna de las condiciones descritas.', none: true }
+        ];
+
+        const d2q3Items = [
+            { id: 'D2Q3-01', text: 'Infraestructura de conectividad', desc: 'Recursos que permiten conectar la empresa y acceder a sistemas y servicios digitales, como Internet de alta velocidad, computación en la nube y acceso remoto a sistemas de la empresa.' },
+            { id: 'D2Q3-02', text: 'Sitio web de la empresa', desc: 'Sitio web propio utilizado para presentar información de la empresa, sus productos o servicios y facilitar la relación con usuarios o clientes.' },
+            { id: 'D2Q3-03', text: 'Formularios y espacios web para comunicarse con clientes', desc: 'Formularios, blogs, foros u otros espacios web que permiten a clientes comunicarse, realizar consultas o enviar información a la empresa.' },
+            { id: 'D2Q3-04', text: 'Chats en línea, redes sociales y chatbots', desc: 'Canales o herramientas digitales para interactuar con clientes, incluidos chats en línea, redes sociales y chatbots.' },
+            { id: 'D2Q3-05', text: 'Ventas por comercio electrónico', desc: 'Venta de productos o servicios mediante transacciones realizadas por canales electrónicos, a consumidores u otras empresas.' },
+            { id: 'D2Q3-06', text: 'Promoción por medios digitales', desc: 'Uso de canales y herramientas digitales para promocionar la empresa, sus productos o servicios.' },
+            { id: 'D2Q3-07', text: 'Trámites y gestiones digitales con instituciones públicas', desc: 'Uso de medios digitales para realizar trámites o interacciones con instituciones públicas, incluida la contratación pública cuando corresponda.' },
+            { id: 'D2Q3-08', text: 'Herramientas de colaboración empresarial a distancia', desc: 'Herramientas digitales que permiten al personal comunicarse, colaborar o realizar actividades empresariales a distancia, como teletrabajo o videoconferencia.' },
+            { id: 'D2Q3-09', text: 'Portal interno para el personal', desc: 'Portal web de uso interno que permite al personal acceder a información, comunicaciones o servicios de la empresa.' },
+            { id: 'D2Q3-10', text: 'Sistemas de gestión empresarial', desc: 'Sistemas digitales para gestionar información y procesos empresariales, incluidos ERP, CRM, gestión de la cadena de suministro, gestión del ciclo de vida del producto y facturación electrónica.' },
+            { id: 'D2Q3-11', text: 'Ninguna de las anteriores', desc: 'No se utiliza ninguna de las soluciones mencionadas.', none: true }
+        ];
+
+        const d2q4Items = [
+            { id: 'D2Q4-01', text: 'Simulación y gemelos digitales', desc: 'Representación digital de un objeto o proceso físico que puede actualizarse con información del objeto o proceso real.' },
+            { id: 'D2Q4-02', text: 'Realidad virtual o realidad aumentada', desc: 'Tecnologías que crean un entorno virtual o superponen información digital sobre la realidad.' },
+            { id: 'D2Q4-03', text: 'Diseño y manufactura asistidos por computadora (CAD/CAM)', desc: 'Software para diseñar y/o apoyar la fabricación mediante computadora.' },
+            { id: 'D2Q4-04', text: 'Sistemas de ejecución de manufactura (MES)', desc: 'Sistemas que gestionan y supervisan la ejecución de operaciones de producción.' },
+            { id: 'D2Q4-05', text: 'Internet de las Cosas e Internet Industrial de las Cosas (IoT/I-IoT)', desc: 'Equipos u objetos conectados que capturan, transmiten o intercambian datos.' },
+            { id: 'D2Q4-06', text: 'Blockchain', desc: 'Tecnología de registro distribuido utilizada para almacenar y verificar transacciones u otros registros.' },
+            { id: 'D2Q4-07', text: 'Fabricación aditiva', desc: 'Producción mediante la incorporación sucesiva de capas de material, por ejemplo impresión 3D.' }
+        ];
+
+        const d3q5Items = [
+            { id: 'D3Q5-01', text: 'Evalúa qué habilidades digitales faltan.', desc: 'Determina qué conocimientos o habilidades digitales necesita el personal y cuáles actualmente no posee.' },
+            { id: 'D3Q5-02', text: 'Diseña un plan de capacitación.', desc: 'Define actividades de formación para desarrollar o actualizar las habilidades digitales necesarias.' },
+            { id: 'D3Q5-03', text: 'Organiza capacitación breve y proporciona recursos.', desc: 'Ofrece sesiones, tutoriales, guías u otros recursos para aprender.' },
+            { id: 'D3Q5-04', text: 'Facilita aprendizaje práctico.', desc: 'Permite aprender mediante práctica, intercambio entre compañeros o experimentación.' },
+            { id: 'D3Q5-05', text: 'Ofrece pasantías, prácticas u oportunidades de aprendizaje y trabajo.', desc: 'Utiliza experiencias prácticas y de trabajo/aprendizaje para desarrollar capacidades.' },
+            { id: 'D3Q5-06', text: 'Financia capacitación externa.', desc: 'Facilita formación proporcionada por proveedores, universidades, consultores u otras organizaciones.' },
+            { id: 'D3Q5-07', text: 'Utiliza programas subsidiados de capacitación.', desc: 'Aprovecha programas públicos o subsidiados de formación/actualización.' },
+            { id: 'D3Q5-08', text: 'Ninguna de las anteriores', desc: 'No realiza ninguna de las prácticas anteriores.', none: true }
+        ];
+
+        const d3q6Items = [
+            { id: 'D3Q6-01', text: 'Explica las nuevas tecnologías y para qué se utilizarán.', desc: 'Informa al personal afectado sobre la solución digital y su propósito.' },
+            { id: 'D3Q6-02', text: 'Comunica los planes de digitalización de forma clara y transparente.', desc: 'Explica qué cambios se realizarán y cómo afectarán al trabajo.' },
+            { id: 'D3Q6-03', text: 'Verifica la aceptación y actúa ante posibles efectos negativos.', desc: 'Detecta resistencia al cambio, sobrecarga, problemas de equilibrio vida-trabajo o riesgos de privacidad y adopta medidas.' },
+            { id: 'D3Q6-04', text: 'Involucra al personal en el diseño o desarrollo.', desc: 'Incluye a trabajadores, también no especializados en tecnología, en la digitalización de productos, servicios o procesos.' },
+            { id: 'D3Q6-05', text: 'Da autonomía y herramientas digitales adecuadas.', desc: 'Permite tomar y ejecutar decisiones dentro de las responsabilidades asignadas.' },
+            { id: 'D3Q6-06', text: 'Adapta puestos y flujos de trabajo.', desc: 'Rediseña tareas o flujos cuando la tecnología cambia la forma real de trabajar.' },
+            { id: 'D3Q6-07', text: 'Establece formas de trabajo más flexibles.', desc: 'Utiliza la digitalización para flexibilizar la forma de trabajo cuando la actividad lo permite.' },
+            { id: 'D3Q6-08', text: 'Proporciona soporte digital.', desc: 'Dispone de apoyo interno o externo para resolver problemas de uso.' },
+            { id: 'D3Q6-09', text: 'Ninguna de las anteriores', desc: 'No realiza ninguna de las prácticas anteriores.', none: true }
+        ];
+
+        const d4q7Items = [
+            { id: 'D4Q7-01', text: 'Existe una política, plan o conjunto de medidas para gestionar los datos.', desc: 'Hay reglas o medidas definidas para administrar los datos de la empresa.' },
+            { id: 'D4Q7-02', text: 'La empresa no recopila datos de forma digital.', desc: 'Los datos se recopilan únicamente mediante medios no digitales.' },
+            { id: 'D4Q7-03', text: 'Los datos relevantes se almacenan digitalmente.', desc: 'La información se guarda en medios digitales, por ejemplo aplicaciones de oficina, correo, aplicaciones independientes, CRM o ERP.' },
+            { id: 'D4Q7-04', text: 'Los datos están adecuadamente integrados, aunque estén distribuidos en distintos sistemas.', desc: 'La información puede conectarse entre sistemas sin perder su utilidad para el negocio.' },
+            { id: 'D4Q7-05', text: 'Los datos pueden consultarse en tiempo real desde diferentes dispositivos y lugares.', desc: 'La información puede estar disponible oportunamente donde se necesita.' },
+            { id: 'D4Q7-06', text: 'Los datos se analizan y reportan sistemáticamente para apoyar decisiones.', desc: 'La empresa utiliza análisis periódicos de datos para decidir.' },
+            { id: 'D4Q7-07', text: 'El análisis se enriquece combinando fuentes externas con datos propios.', desc: 'Se incorporan datos de terceros cuando aportan valor al análisis.' },
+            { id: 'D4Q7-08', text: 'Los resultados del análisis pueden consultarse sin asistencia especializada.', desc: 'La dirección puede utilizar reportes o tableros sin depender de un especialista.' },
+            { id: 'D4Q7-09', text: 'Ninguna de las anteriores', desc: 'No realiza ninguna de las prácticas anteriores.', none: true }
+        ];
+
+        const d4q8Items = [
+            { id: 'D4Q8-01', text: 'Existe una política o conjunto de medidas de seguridad de datos.', desc: 'Hay reglas o medidas definidas para proteger la información.' },
+            { id: 'D4Q8-02', text: 'Los datos relacionados con clientes están protegidos contra ataques informáticos.', desc: 'Existen medidas para evitar accesos o ataques que comprometan esos datos.' },
+            { id: 'D4Q8-03', text: 'El personal recibe periódicamente información y capacitación sobre ciberseguridad y protección de datos.', desc: 'Los trabajadores son informados y capacitados sobre riesgos y medidas de protección.' },
+            { id: 'D4Q8-04', text: 'Las amenazas informáticas se monitorean y evalúan periódicamente.', desc: 'La empresa revisa regularmente riesgos y amenazas.' },
+            { id: 'D4Q8-05', text: 'Se mantiene una copia completa de respaldo de los datos críticos fuera de las instalaciones o en la nube.', desc: 'Existe un respaldo que permitiría recuperar información crítica.' },
+            { id: 'D4Q8-06', text: 'Existe un plan de continuidad para recuperar la operación después de una falla grave.', desc: 'Existe una forma definida de recuperar la operación ante ransomware, daño físico u otra falla catastrófica.' },
+            { id: 'D4Q8-07', text: 'Ninguna de las anteriores', desc: 'No realiza ninguna de las medidas anteriores.', none: true }
+        ];
+
+        const d5q9Items = [
+            { id: 'D5Q9-01', text: 'Procesamiento de lenguaje natural', desc: 'Sistemas que interpretan o generan lenguaje, por ejemplo chatbots, extracción/análisis de texto o traducción automática.' },
+            { id: 'D5Q9-02', text: 'Visión por computadora o reconocimiento de imágenes', desc: 'Sistemas que interpretan imágenes o video.' },
+            { id: 'D5Q9-03', text: 'Procesamiento de audio o reconocimiento del habla', desc: 'Sistemas que reconocen, procesan o generan voz/audio.' },
+            { id: 'D5Q9-04', text: 'Robótica y dispositivos autónomos', desc: 'Equipos que realizan tareas automáticamente o con autonomía.' },
+            { id: 'D5Q9-05', text: 'Inteligencia de negocios, analítica y sistemas de apoyo a decisiones/control', desc: 'Herramientas que consolidan datos para análisis, alertas, recomendaciones, decisiones o control inteligente.' }
+        ];
+
+        const d6q10Items = [
+            { id: 'D6Q10-01', text: 'Modelo de negocio sostenible', desc: 'Uso de tecnología digital para apoyar modelos como economía circular o producto como servicio.' },
+            { id: 'D6Q10-02', text: 'Prestación de servicios sostenibles', desc: 'Uso de tecnología para medir u optimizar el uso o reutilización de servicios.' },
+            { id: 'D6Q10-03', text: 'Productos sostenibles', desc: 'Ecodiseño, gestión digital del ciclo de vida o extensión de la vida útil.' },
+            { id: 'D6Q10-04', text: 'Producción y manufactura sostenibles', desc: 'Uso digital para reducir materiales, recursos o impactos de producción.' },
+            { id: 'D6Q10-05', text: 'Gestión de emisiones, contaminación o residuos', desc: 'Medición, control o gestión digital de estos impactos.' },
+            { id: 'D6Q10-06', text: 'Generación sostenible de energía en instalaciones propias', desc: 'Uso digital relacionado con generación/gestión sostenible de energía propia.' },
+            { id: 'D6Q10-07', text: 'Optimización del consumo o costo de materias primas', desc: 'Uso de tecnología para optimizar materias primas.' },
+            { id: 'D6Q10-08', text: 'Reducción de transporte y empaque', desc: 'Uso de soluciones digitales para reducir transporte o empaque.' },
+            { id: 'D6Q10-09', text: 'Aplicaciones digitales para fomentar comportamientos responsables de consumidores', desc: 'Uso de aplicaciones o canales digitales para promover conductas responsables.' },
+            { id: 'D6Q10-10', text: 'Procesos administrativos sin papel', desc: 'Uso de procesos digitales en lugar de formularios/documentos en papel.' },
+            { id: 'D6Q10-11', text: 'Ninguna de las anteriores', desc: 'No utiliza tecnología digital para ninguna de las prácticas anteriores.', none: true }
+        ];
+
+        const d6q11Items = [
+            { id: 'D6Q11-01', text: 'Las preocupaciones y normas ambientales están incorporadas en la estrategia digital.', desc: 'Las consideraciones ambientales forman parte de la estrategia y las decisiones de digitalización.' },
+            { id: 'D6Q11-02', text: 'Existe un sistema de gestión ambiental o una certificación implementada.', desc: 'La empresa tiene un sistema formal o certificación ambiental en funcionamiento.' },
+            { id: 'D6Q11-03', text: 'Los aspectos ambientales forman parte de los criterios de compra de tecnologías y selección de proveedores.', desc: 'El impacto ambiental influye en compras tecnológicas y selección de proveedores.' },
+            { id: 'D6Q11-04', text: 'Se mide y optimiza el consumo de energía de tecnologías digitales y almacenamiento de datos.', desc: 'La empresa controla y busca reducir el consumo energético asociado a tecnología y datos.' },
+            { id: 'D6Q11-05', text: 'Se recicla o reutiliza activamente equipo tecnológico que ya no se utiliza.', desc: 'Existe una práctica efectiva de reciclaje o reutilización de equipos.' },
+            { id: 'D6Q11-06', text: 'Ninguna de las anteriores', desc: 'No aplica ninguna de las prácticas anteriores.', none: true }
+        ];
+
+        const scale05Options = [
+            { val: 0, text: '0 - No utilizada', desc: 'No la utiliza actualmente' },
+            { val: 1, text: '1 - Considera utilizar', desc: 'La está evaluando, pero todavía no la ha probado' },
+            { val: 2, text: '2 - Prototipando', desc: 'Está desarrollando un prototipo o prueba inicial' },
+            { val: 3, text: '3 - Probando', desc: 'La está probando en un uso real o controlado' },
+            { val: 4, text: '4 - Implementando', desc: 'Está desplegando la solución para ponerla en operación' },
+            { val: 5, text: '5 - Operacional', desc: 'Está funcionando y se utiliza regularmente' }
+        ];
+
+        // CATÁLOGOS DE INTERPRETACIÓN OFICIAL JRC (SECCIÓN 8.5 y 8.6)
+        const interpretacionesGlobales = {
+            Basic: "La empresa se encuentra al inicio de su proceso de transformación digital. Puede obtener beneficios importantes incluso con inversiones limitadas en tecnologías digitales y capacidades. La adopción se concentra todavía en buena medida en tareas administrativas; existe potencial para avanzar en tecnologías de uso más amplio y avanzado, capacitación, personal especializado en TI, participación del personal, estrategia de datos y seguridad, y uso de tecnologías digitales para sostenibilidad[cite: 5].",
+            Average: "La empresa ya ha alcanzado un nivel medio de madurez digital, aunque todavía existe margen de desarrollo. Las inversiones cubren parte de las operaciones principales y se utilizan tecnologías convencionales, pero puede incrementarse la preparación para soluciones más avanzadas. Se requiere fortalecer capacidades digitales, capacitación, participación del personal, gestión y seguridad de datos, y el uso de tecnologías digitales para sostenibilidad[cite: 5].",
+            ModeratelyAdvanced: "La empresa se encuentra en una etapa moderadamente avanzada de transformación digital y ya obtiene beneficios de tecnologías convencionales y, en menor medida, avanzadas. Las inversiones abarcan una parte amplia de las operaciones, pero todavía existe espacio para mejorar la preparación y realizar inversiones más focalizadas en tecnologías y capacidades digitales[cite: 5].",
+            Advanced: "La empresa se encuentra en una etapa avanzada de transformación digital y utiliza tecnologías convencionales y avanzadas en distintos aspectos de sus operaciones. La digitalización está consolidada y puede seguir profundizándose mediante inversiones más focalizadas en tecnologías avanzadas, sostenibilidad y otras áreas de especialización[cite: 5]."
+        };
+
+        const interpretacionesDimensiones = {
+            D1: {
+                Basic: "La estrategia e inversión en digitalización se encuentran en una etapa muy temprana. Se requiere definir un plan claro, identificar recursos financieros y fortalecer el compromiso directivo; también existe potencial para modernizar operaciones y aplicar tecnologías digitales en áreas como logística, marketing y ventas, compras y seguridad[cite: 5].",
+                Average: "Existe un plan y algunos recursos, y la dirección muestra receptividad, pero se requiere intensificar el compromiso y los esfuerzos de digitalización. Ya se han realizado algunas inversiones para modernizar operaciones, aunque existe potencial para automatizar procesos, incorporar tecnologías más avanzadas y fortalecer infraestructura y personal especializado[cite: 5].",
+                ModeratelyAdvanced: "La estrategia e inversión se encuentran en una etapa moderadamente avanzada. Existe un plan específico, recursos y compromiso directivo, y las inversiones buscan optimizar operaciones y reducir costos. El siguiente desarrollo comprende consolidar el plan, mejorar productos o servicios mediante digitalización, ampliar el papel del personal TI y considerar modelos de negocio y ofertas con mayor contenido digital[cite: 5].",
+                Advanced: "La digitalización es una prioridad y existen inversiones extensas, un plan claro y recursos asignados. Las inversiones ya contribuyen a mejorar productos o servicios, diversificar actividades y optimizar operaciones. La empresa puede profundizar mediante tecnologías especializadas, inteligencia artificial, analítica avanzada y modelos de negocio impulsados por datos[cite: 5]."
+            },
+            D2: {
+                Basic: "La adopción de tecnologías digitales se encuentra en una etapa muy temprana. Se utiliza un número reducido de tecnologías convencionales y con aplicaciones empresariales limitadas. Existe potencial para mejorar ventas, eficiencia, relación con clientes y capacidades del personal mediante tecnologías convencionales y avanzadas[cite: 5].",
+                Average: "Se utilizan algunas, pero no todas, las tecnologías digitales convencionales, principalmente en administración y gestión. Existe margen para acelerar su adopción y obtener mayores beneficios en ventas, eficiencia, atención al cliente y colaboración, así como para incorporar tecnologías especializadas o avanzadas[cite: 5].",
+                ModeratelyAdvanced: "La empresa obtiene beneficios de tecnologías convencionales y dispone de infraestructura de conectividad sólida. Las soluciones digitales se concentran en operaciones internas y relación con clientes; existe espacio para probar e implementar tecnologías avanzadas e integradas, como ERP, CRM o SCM, y ampliar su uso en operaciones[cite: 5].",
+                Advanced: "La empresa utiliza prácticamente la mayoría de las tecnologías digitales convencionales en operaciones internas y externas y cuenta con sistemas integrados de gestión. Existe capacidad para experimentar e implementar tecnologías avanzadas y obtener beneficios de soluciones especializadas[cite: 5]."
+            },
+            D3: {
+                Basic: "El desarrollo de capacidades digitales se encuentra en una etapa muy temprana. Las habilidades digitales son básicas y los puestos aún no se han rediseñado para el entorno digital. Se recomienda como siguiente paso evaluar las habilidades y establecer un plan concreto de formación y actualización[cite: 5].",
+                Average: "La dirección reconoce la importancia de desarrollar capacidades digitales y ya existen algunas acciones de formación. Se requiere un plan más detallado y adaptado a las necesidades de los puestos, combinado con oportunidades de experimentación, autonomía y desarrollo profesional, además de una mayor adaptación de los puestos al entorno digital[cite: 5].",
+                ModeratelyAdvanced: "Existe un plan de formación y la capacitación digital es una prioridad. Las habilidades del personal son suficientes para realizar sus funciones mediante medios digitales, aunque todavía puede reforzarse la experimentación, la innovación, la participación del personal en la digitalización y el rediseño de puestos y entornos de trabajo[cite: 5].",
+                Advanced: "Existe un plan integral de capacitación y actualización que se ejecuta y supervisa activamente. La formación avanzada se adapta a las necesidades del personal y se combina con experimentación y autonomía. El personal participa activamente en la estrategia y los puestos han sido rediseñados para el entorno digital[cite: 5]."
+            },
+            D4: {
+                Basic: "La gestión de datos se encuentra en una etapa muy temprana. Pocos datos están digitalizados y existe necesidad de establecer una política o plan de datos, avanzar en la digitalización y fortalecer la seguridad y los procesos de ciberseguridad[cite: 5].",
+                Average: "Algunos datos están almacenados de forma digital y estructurada, principalmente en procesos administrativos y financieros, pero el intercambio e integración entre aplicaciones puede mejorar. Los datos todavía no se aprovechan plenamente para las operaciones y la toma de decisiones, y la protección puede requerir una política de ciberseguridad más completa[cite: 5].",
+                ModeratelyAdvanced: "Existe una política o conjunto de medidas de gestión de datos y muchos procesos y funciones están digitalizados. La mayoría de los datos se encuentra estructurada y existe cierto grado de integración. El análisis de datos apoya operaciones y decisiones; también existen medidas de ciberseguridad, respaldo y continuidad que pueden seguir fortaleciéndose[cite: 5].",
+                Advanced: "Los procesos y funciones están digitalizados en la mayor parte de la empresa y los datos se encuentran estructurados. La recopilación y uso de datos son fundamentales para las operaciones y la toma de decisiones. Existen mecanismos de intercambio, políticas y medidas de ciberseguridad, respaldos completos y un plan de continuidad ante incidentes graves[cite: 5]."
+            },
+            D5: {
+                Basic: "La automatización y la inteligencia facilitadas por medios digitales se encuentran en una etapa muy temprana. No existen tareas automatizadas de forma relevante y la IA y la automatización todavía no apoyan actividades empresariales, comerciales u operativas[cite: 5].",
+                Average: "La automatización digital puede utilizarse parcialmente y de manera puntual, especialmente en tareas administrativas. La IA y la automatización todavía no apoyan de forma relevante las actividades comerciales u operativas ni han generado aumentos medibles de productividad[cite: 5].",
+                ModeratelyAdvanced: "Algunas tareas están parcialmente automatizadas y apoyadas por IA, especialmente en procesos administrativos y financieros. Puede existir apoyo a actividades comerciales, aunque todavía no se aplica plenamente a mejorar productos o servicios. Ya se observan algunos aumentos medibles de productividad[cite: 5].",
+                Advanced: "Algunas tareas están totalmente automatizadas y apoyadas por IA, especialmente en procesos administrativos y financieros. La automatización puede apoyar la comercialización y la mejora de productos o servicios y contribuir a aumentos de productividad, eficiencia y reducción de desperdicios y costos[cite: 5]."
+            },
+            D6: {
+                Basic: "La digitalización verde se encuentra en una etapa muy temprana. Se requiere incorporar aspectos ambientales en las decisiones de digitalización y aprovechar las tecnologías digitales para operaciones sostenibles, reducción de impactos, optimización de recursos, trazabilidad, procesos sin papel y selección de equipos digitales ambientalmente adecuados[cite: 5].",
+                Average: "Los aspectos ambientales se consideran en algunas decisiones de digitalización y las tecnologías pueden haber comenzado a contribuir a operaciones sostenibles. Todavía existe potencial para utilizarlas de manera más activa en reducción de emisiones y residuos, optimización de recursos, trazabilidad, procesos sin papel y criterios ambientales de compra[cite: 5].",
+                ModeratelyAdvanced: "Los aspectos ambientales se consideran en muchas decisiones de digitalización y las tecnologías contribuyen en cierta medida a operaciones sostenibles. Existen avances en reducción de emisiones y residuos, optimización de recursos, trazabilidad y procesos sin papel, aunque todavía puede ampliarse la contribución de las soluciones digitales y la integración de criterios ambientales[cite: 5].",
+                Advanced: "Los aspectos ambientales se consideran en la mayoría de las decisiones de digitalización, incluida la compra, el consumo de energía y la reutilización. La tecnología contribuye a operaciones sostenibles, reducción de impactos, optimización de recursos y trazabilidad; los procesos administrativos son esencialmente sin papel y los impactos ambientales forman parte de las decisiones digitales[cite: 5]."
+            }
+        };
+
+        let chartInstance = null;
+
+        // RENDER DOM
+        document.addEventListener('DOMContentLoaded', () => {
+            renderD1Q1();
+            renderCheckboxGroup('group-D1Q2', d1q2Items, 'D1Q2');
+            renderCheckboxGroup('group-D2Q3', d2q3Items, 'D2Q3');
+            renderScale05Group('group-D2Q4', d2q4Items, 'D2Q4');
+            renderCheckboxGroup('group-D3Q5', d3q5Items, 'D3Q5');
+            renderCheckboxGroup('group-D3Q6', d3q6Items, 'D3Q6');
+            renderCheckboxGroup('group-D4Q7', d4q7Items, 'D4Q7');
+            renderCheckboxGroup('group-D4Q8', d4q8Items, 'D4Q8');
+            renderScale05Group('group-D5Q9', d5q9Items, 'D5Q9');
+            renderCheckboxGroup('group-D6Q10', d6q10Items, 'D6Q10');
+            renderD6Q11();
+        });
+
+        function renderD1Q1() {
+            const tbody = document.getElementById('table-D1Q1');
+            tbody.innerHTML = d1q1Items.map(item => `
+                <tr class="hover:bg-slate-50 transition-colors">
+                    <td class="py-3 px-4">
+                        <div class="font-medium text-slate-800">${item.text}</div>
+                        <div class="text-xs text-slate-500">${item.desc}</div>
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <input type="checkbox" name="D1Q1_ya" value="${item.id}" 
+                            onchange="updateD1Q1State('${item.id}')"
+                            class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                    </td>
+                    <td class="py-3 px-4 text-center">
+                        <input type="checkbox" name="D1Q1_plan" value="${item.id}" 
+                            onchange="updateD1Q1State('${item.id}')"
+                            class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                    </td>
+                    <td class="py-3 px-4 text-center bg-slate-50">
+                        <input type="checkbox" id="D1Q1_none_${item.id}" disabled checked 
+                            class="w-4 h-4 text-slate-400 rounded border-slate-300">
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateD1Q1State(itemId) {
+            const ya = document.querySelector(`input[name="D1Q1_ya"][value="${itemId}"]`).checked;
+            const plan = document.querySelector(`input[name="D1Q1_plan"][value="${itemId}"]`).checked;
+            const noneCb = document.getElementById(`D1Q1_none_${itemId}`);
+            
+            noneCb.checked = !ya && !plan;
+        }
+
+        function renderCheckboxGroup(containerId, items, groupName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(item => `
+                <label class="flex items-start space-x-3 p-2.5 rounded-lg border border-slate-100 hover:bg-slate-50 cursor-pointer text-sm">
+                    <input type="checkbox" name="${groupName}" value="${item.id}" 
+                        data-none="${item.none || false}"
+                        onchange="handleExclusiveCheckbox(this, '${groupName}')"
+                        class="mt-0.5 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500">
+                    <div>
+                        <div class="${item.none ? 'font-bold text-slate-600' : 'font-medium text-slate-800'}">${item.text}</div>
+                        <div class="text-xs text-slate-500 mt-0.5">${item.desc}</div>
+                    </div>
+                </label>
+            `).join('');
+        }
+
+        function renderScale05Group(containerId, items, groupName) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map(item => `
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="text-sm font-semibold text-slate-800">${item.text}</div>
+                    <div class="text-xs text-slate-500 mb-3">${item.desc}</div>
+                    <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+                        ${scale05Options.map(opt => `
+                            <label class="flex flex-col justify-between p-2 rounded border bg-white border-slate-200 cursor-pointer hover:border-indigo-400 text-xs">
+                                <div class="flex items-center space-x-1.5 font-bold text-slate-700">
+                                    <input type="radio" name="${groupName}_${item.id}" value="${opt.val}" ${opt.val === 0 ? 'checked' : ''} class="text-indigo-600 focus:ring-indigo-500">
+                                    <span>${opt.val}</span>
+                                </div>
+                                <span class="text-[10px] text-slate-500 mt-1 leading-tight">${opt.desc}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderD6Q11() {
+            const container = document.getElementById('group-D6Q11');
+            container.innerHTML = d6q11Items.map(item => `
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3 rounded-lg bg-slate-50 border border-slate-100 text-sm gap-2">
+                    <div>
+                        <div class="${item.none ? 'font-bold text-slate-600' : 'font-medium text-slate-800'}">${item.text}</div>
+                        <div class="text-xs text-slate-500">${item.desc}</div>
+                    </div>
+                    ${item.none ? `
+                        <label class="inline-flex items-center text-xs font-semibold text-slate-600">
+                            <input type="checkbox" name="D6Q11_none" value="${item.id}" onchange="handleD6Q11None(this)" class="w-4 h-4 text-indigo-600 rounded">
+                            <span class="ml-1.5">Marcar si aplica</span>
+                        </label>
+                    ` : `
+                        <div class="flex space-x-3 shrink-0">
+                            <label class="inline-flex items-center text-xs">
+                                <input type="radio" name="D6Q11_${item.id}" value="0" checked class="text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-1 text-slate-600">No (0)</span>
+                            </label>
+                            <label class="inline-flex items-center text-xs">
+                                <input type="radio" name="D6Q11_${item.id}" value="0.5" class="text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-1 text-slate-600">Parcial (0.5)</span>
+                            </label>
+                            <label class="inline-flex items-center text-xs">
+                                <input type="radio" name="D6Q11_${item.id}" value="1" class="text-indigo-600 focus:ring-indigo-500">
+                                <span class="ml-1 text-slate-600">Sí (1)</span>
+                            </label>
+                        </div>
+                    `}
+                </div>
+            `).join('');
+        }
+
+        function handleExclusiveCheckbox(changedElement, groupName) {
+            const checkboxes = document.querySelectorAll(`input[name="${groupName}"]`);
+            const isNone = changedElement.getAttribute('data-none') === 'true';
+
+            if (isNone && changedElement.checked) {
+                checkboxes.forEach(cb => {
+                    if (cb !== changedElement) cb.checked = false;
+                });
+            } else if (!isNone && changedElement.checked) {
+                checkboxes.forEach(cb => {
+                    if (cb.getAttribute('data-none') === 'true') cb.checked = false;
+                });
+            }
+        }
+
+        function handleD6Q11None(noneCb) {
+            if (noneCb.checked) {
+                d6q11Items.forEach(item => {
+                    if (!item.none) {
+                        const noRadio = document.querySelector(`input[name="D6Q11_${item.id}"][value="0"]`);
+                        if (noRadio) noRadio.checked = true;
+                    }
+                });
+            }
+        }
+
+        // MOTOR DE CÁLCULO CUMPLIENDO INSTRUMENTO V2.1
+        function calcularDMA(e) {
+            e.preventDefault();
+
+            const d1q1_ya = getCheckedCount('D1Q1_ya');
+            const d1q1_plan = getCheckedCount('D1Q1_plan');
+            const d1q2 = getCheckedCount('D1Q2', 'D1Q2-11');
+            const D1 = (d1q1_ya * 3.3333) + (d1q1_plan * 3.3333) + (d1q2 * 3.3333);
+
+            const d2q3 = getCheckedCount('D2Q3', 'D2Q3-11');
+            const d2q4_sum_conv = getScale05Sum('D2Q4', d2q4Items);
+            const Q4_score = (d2q4_sum_conv * 10) / 7;
+            const D2 = (d2q3 * 5) + (Q4_score * 5);
+
+            const d3q5 = getCheckedCount('D3Q5', 'D3Q5-08');
+            const Q5_score = (d3q5 * 10) / 7;
+            const d3q6 = getCheckedCount('D3Q6', 'D3Q6-09');
+            const Q6_score = (d3q6 * 10) / 8;
+            const D3 = (Q5_score * 5) + (Q6_score * 5);
+
+            const d4q7 = getCheckedCount('D4Q7', 'D4Q7-09');
+            const Q7_score = (d4q7 * 10) / 8;
+            const d4q8 = getCheckedCount('D4Q8', 'D4Q8-07');
+            const Q8_score = (d4q8 * 10) / 6;
+            const D4 = (Q7_score * 5) + (Q8_score * 5);
+
+            const d5q9_sum_conv = getScale05Sum('D5Q9', d5q9Items);
+            const Q9_score = (d5q9_sum_conv * 10) / 5;
+            const D5 = Q9_score * 10;
+
+            const d6q10 = getCheckedCount('D6Q10', 'D6Q10-11');
+            const d6q11_none = document.querySelector('input[name="D6Q11_none"]')?.checked;
+            const d6q11_sum = d6q11_none ? 0 : getRadioSumFloat('D6Q11', d6q11Items);
+            const Q11_score = (d6q11_sum * 10) / 5;
+            const D6 = (d6q10 * 5) + (Q11_score * 5);
+
+            const dmaGlobal = (D1 + D2 + D3 + D4 + D5 + D6) / 6;
+
+            mostrarResultados({
+                D1: Math.min(100, D1),
+                D2: Math.min(100, D2),
+                D3: Math.min(100, D3),
+                D4: Math.min(100, D4),
+                D5: Math.min(100, D5),
+                D6: Math.min(100, D6),
+                Global: Math.min(100, dmaGlobal)
+            });
+        }
+
+        function getCheckedCount(groupName, noneId = null) {
+            const checked = document.querySelectorAll(`input[name="${groupName}"]:checked`);
+            let count = 0;
+            checked.forEach(cb => {
+                if (!noneId || cb.value !== noneId) count++;
+            });
+            return count;
+        }
+
+        function getScale05Sum(groupPrefix, items) {
+            let sumConv = 0;
+            items.forEach(item => {
+                const selected = document.querySelector(`input[name="${groupPrefix}_${item.id}"]:checked`);
+                if (selected) {
+                    sumConv += (parseInt(selected.value, 10) * 0.2);
+                }
+            });
+            return sumConv;
+        }
+
+        function getRadioSumFloat(groupPrefix, items) {
+            let sum = 0;
+            items.forEach(item => {
+                if (!item.none) {
+                    const selected = document.querySelector(`input[name="${groupPrefix}_${item.id}"]:checked`);
+                    if (selected) sum += parseFloat(selected.value);
+                }
+            });
+            return sum;
+        }
+
+        // FUNCIÓN AUXILIAR PARA DETERMINAR NIVEL SEGÚN REGLA 8.3
+        function obtenerClasificacion(score) {
+            if (score <= 25) return { key: 'Basic', text: 'Basic (0–25%)', class: 'bg-red-100 text-red-800 border border-red-300' };
+            if (score <= 50) return { key: 'Average', text: 'Average (26–50%)', class: 'bg-yellow-100 text-yellow-800 border border-yellow-300' };
+            if (score <= 75) return { key: 'ModeratelyAdvanced', text: 'Moderately Advanced (51–75%)', class: 'bg-blue-100 text-blue-800 border border-blue-300' };
+            return { key: 'Advanced', text: 'Advanced (76–100%)', class: 'bg-emerald-100 text-emerald-800 border border-emerald-300' };
+        }
+
+        // RENDER RESULTADOS, GRÁFICO RADAR E INTERPRETACIONES
+        function mostrarResultados(scores) {
+            const resultsDiv = document.getElementById('resultsSection');
+            resultsDiv.classList.remove('hidden');
+
+            const globalFormatted = scores.Global.toFixed(1);
+            document.getElementById('scoreGlobal').innerText = globalFormatted;
+            document.getElementById('progressBar').style.width = `${globalFormatted}%`;
+
+            const nivelGlobalInfo = obtenerClasificacion(scores.Global);
+            const badge = document.getElementById('badgeNivel');
+            badge.className = `px-4 py-1.5 rounded-full text-xs md:text-sm font-bold tracking-wide uppercase ${nivelGlobalInfo.class}`;
+            badge.innerText = `Nivel: ${nivelGlobalInfo.text}`;
+
+            // Inyectar Interpretación Global
+            document.getElementById('globalInterpretationText').innerText = interpretacionesGlobales[nivelGlobalInfo.key];
+
+            const dims = [
+                { id: 'D1', name: 'D1. Estrategia Digital', val: scores.D1 },
+                { id: 'D2', name: 'D2. Preparación Digital', val: scores.D2 },
+                { id: 'D3', name: 'D3. Personas y Capacidad', val: scores.D3 },
+                { id: 'D4', name: 'D4. Datos y Ciberseguridad', val: scores.D4 },
+                { id: 'D5', name: 'D5. Automatización e IA', val: scores.D5 },
+                { id: 'D6', name: 'D6. Digitalización Verde', val: scores.D6 }
+            ];
+
+            const cardsContainer = document.getElementById('dimensionCards');
+            cardsContainer.innerHTML = dims.map(d => {
+                const nivelDim = obtenerClasificacion(d.val);
+                const textoInterp = interpretacionesDimensiones[d.id][nivelDim.key];
+                return `
+                    <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
+                        <div class="flex flex-wrap justify-between items-center gap-2">
+                            <span class="text-xs font-bold text-slate-600 uppercase tracking-wider">${d.name}</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${nivelDim.class}">Nivel: ${nivelDim.text}</span>
+                        </div>
+                        <div class="flex items-baseline space-x-2">
+                            <div class="text-3xl font-black text-slate-800">${d.val.toFixed(1)}</div>
+                            <span class="text-xs text-slate-400">/ 100</span>
+                        </div>
+                        <div class="w-full bg-slate-200 rounded-full h-1.5">
+                            <div class="bg-indigo-500 h-1.5 rounded-full" style="width: ${Math.min(100, Math.max(0, d.val))}%"></div>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 text-xs text-slate-700 leading-relaxed">
+                            <span class="font-bold text-slate-900 block mb-1">Interpretación metodológica:</span>
+                            ${textoInterp}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            renderChart(dims);
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function renderChart(dims) {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['D1. Estrategia', 'D2. Preparación', 'D3. Personas', 'D4. Datos', 'D5. IA & Aut.', 'D6. Verde'],
+                    datasets: [{
+                        label: 'Puntaje DMA',
+                        data: dims.map(d => d.val.toFixed(1)),
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                        pointBorderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e2e8f0' },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: { font: { size: 11, weight: '600' }, color: '#334155' },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { stepSize: 20, display: false }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+
+        // MOTOR PDF CORREGIDO
+        function descargarPDF() {
+            const element = document.getElementById('pdfContainer');
+            const pdfBtn = document.getElementById('pdfBtn');
+            const chartCanvas = document.getElementById('radarChart');
+            const chartWrapper = document.getElementById('chartWrapper');
+
+            pdfBtn.style.visibility = 'hidden';
+
+            const chartImage = document.createElement('img');
+            chartImage.src = chartCanvas.toDataURL('image/png', 1.0);
+            chartImage.className = 'max-h-72 object-contain mx-auto';
+            chartImage.id = 'tempChartImg';
+
+            chartCanvas.style.display = 'none';
+            chartWrapper.appendChild(chartImage);
+
+            const opt = {
+                margin:       [0.3, 0.3, 0.3, 0.3],
+                filename:     'Informe_Madurez_Digital_DMA_P3.1_Interpretaciones.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    backgroundColor: '#ffffff',
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    chartImage.remove();
+                    chartCanvas.style.display = 'block';
+                    pdfBtn.style.visibility = 'visible';
+                }).catch(err => {
+                    console.error("Error al generar PDF:", err);
+                    chartImage.remove();
+                    chartCanvas.style.display = 'block';
+                    pdfBtn.style.visibility = 'visible';
+                });
+            }, 300);
+        }
+    </script>
+</body>
+</html>
